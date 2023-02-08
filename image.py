@@ -1,19 +1,23 @@
 from PyQt5.QtCore import Qt
-from demoData import *
+from PyQt5.QtGui import QImage
+from PyQt5.QtWidgets import QLabel
 import requests
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QHBoxLayout
-from PyQt5.QtGui import QImage, QPixmap
+from demoData import *
 
 
+#async
 def getImg(url_image=curv):
     # app = QApplication([])
     image = QImage()
+    print('loading image...')
+    print(curv)
     image.loadFromData(requests.get(url_image).content)
 
     image_label = QLabel()
-    image_label.setPixmap(QPixmap(image).scaled(800, 800, Qt.KeepAspectRatio))
+    image = QPixmap(image).scaled(800, 800, Qt.KeepAspectRatio)
+    image_label.setPixmap(image)
     image_label.resize(60, 15)
     #image_label.show()
-
+    print('fetched image')
     #app.exec_()
     return image_label

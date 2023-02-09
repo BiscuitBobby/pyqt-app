@@ -4,13 +4,12 @@ from diagbox import widg
 import textbox
 from buttons import button_list, RoundedButton
 from PyQt5.QtCore import Qt
-from demoData import *
+from fetch import *
 import requests
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout
 from PyQt5.QtGui import QImage, QPixmap
 from image import getImg
 import threading
-url_image = curv
 
 
 def thred(func):
@@ -23,14 +22,13 @@ def next():
     global n
     global but
     if (n+1) < len(lst):
-        print(f'loading image {n}...')
-        but.update()
         n += 1
+        print(f'loading image {n}...')
         curv = lst[n]
-        img_data = requests.get(curv).content
-        print(f'imported image {curv}')
+        img_dat = requests.get(curv).content
         image = QImage()
-        image.loadFromData(img_data)
+        image.loadFromData(img_dat)
+        print(f'imported image {curv}')
         image_label.setPixmap(QPixmap(image))
         pic = QPixmap(image).scaled(800, 800, Qt.KeepAspectRatio)
         image_label.setPixmap(pic)
@@ -55,6 +53,22 @@ def prev():
         image_label.update()
 
 
+def fetch_apply(key='DEMO_KEY', rover='curiosity', cam='', earth_date='2015-6-3'):
+    global lst
+    global curv
+    global n
+    print(diag.earthdate.selectedDate().toPyDate(), diag.rover.currentText(), diag.cam.currentText())
+    fallback_lst = lst
+    lst = linku(api_key, diag.rover.currentText(), diag.cam.currentText(), diag.earthdate.selectedDate().toPyDate())
+    if len(lst) < 1:
+        print("no data available")
+        lst = fallback_lst
+    else:
+        curv = lst[0]
+        n -= 1
+        next()
+
+
 if __name__ == "__main__":
     app = QApplication([])
     window = QWidget()
@@ -65,11 +79,13 @@ if __name__ == "__main__":
     previ.setFixedSize(50, 50)
     previ.clicked.connect(lambda: thred(prev()))
     previ.setStyleSheet("background-color: #283747; border-radius: 10px;")
+
     # next button
     nekst = RoundedButton(">")
     nekst.setFixedSize(50, 50)
     nekst.clicked.connect(lambda: thred(next()))
     nekst.setStyleSheet("background-color: #283747; border-radius: 10px;")
+
     # fetch
     but = RoundedButton('')
     but.clicked.connect(lambda: print(text.text()))
@@ -79,6 +95,7 @@ if __name__ == "__main__":
     sidebar = QVBoxLayout()  # vertical box layout
     image = QVBoxLayout()
     fetchbar = QHBoxLayout()
+
     # nav = QHBoxLayout
     masterLay = QHBoxLayout()  # master layout (put other layouts in here), Horizontal box layout
     masterMasterLay = QVBoxLayout()
@@ -99,6 +116,7 @@ if __name__ == "__main__":
 
     # sidebar.addWidget(text)
     diag = widg()
+    diag.x.clicked.connect(lambda: fetch_apply())
     sidebar.addLayout(diag.layout)
 
     # fetch bar
@@ -113,6 +131,7 @@ if __name__ == "__main__":
     image.addWidget(image_label)
     image.addLayout(fetchbar)  # fetchbar
     image.addStretch()
+
     # --------------------------------putting together the master layout------------------------------------------------
     sidebar.addLayout(fetchbar)
     sidebar.addLayout(fetchbar)
@@ -133,4 +152,4 @@ if __name__ == "__main__":
     window.setStyleSheet("background-color: #17202a;")
     window.show()
 
-app.exec_()
+    app.exec_()

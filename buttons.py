@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QPushButton
 class RoundedButton(QPushButton):
     def __init__(self, *args):
         super().__init__(*args)
-        self.setFixedSize(245, 50)
+        self.setFixedSize(300, 50)
         self.setStyleSheet("background-color: orange; border-radius: 10px;")
 
 

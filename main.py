@@ -1,3 +1,6 @@
+import subprocess
+import sys
+
 from PyQt5.QtGui import QColor, QPalette
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
 from diagbox import widg
@@ -13,22 +16,9 @@ from image import getImg
 import threading
 
 
-def mail_win():
-    app1 = QApplication([])
-    window1 = QWidget()
-    window1.setWindowTitle('mail')
-    widg = mail.widg()
-    widg.mail_button.clicked.connect(lambda: send_mail(widg.recip.text().split(','), widg.sub.text(), widg.bod.text()))
-    window1.setLayout(widg.layout)
-    window1.setStyleSheet('background-color: #283747')
-    window1.show()
-    app1.exec_()
-
-def open_new_window(self):
-    # create an instance of the NewWindow class
-    new_window = mail.widg()
-    # show the new window
-    new_window.show()
+def open_new_window(lst):
+    param = lst
+    subprocess.run(["python", 'mail/mail.py', str(lst)])
 
 def thred(func):
     thread = threading.Thread(target=func, args=(10,))
@@ -128,7 +118,7 @@ if __name__ == "__main__":
     # sidebar
     buttList = button_list(image_label)
     send = buttList['send']
-    send.clicked.connect(open_new_window)
+    send.clicked.connect(lambda: open_new_window(lst))
     sidebar.addWidget(send)
     sidebar.setAlignment(Qt.AlignTop)
 

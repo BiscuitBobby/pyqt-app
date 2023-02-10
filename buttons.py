@@ -10,7 +10,6 @@ class RoundedButton(QPushButton):
 def button_list(img):  # img is the image widget
     print('buttons added')
     button2 = RoundedButton("send image")
-    button3 = RoundedButton("send all images")
     spacer = RoundedButton()
     spacer.setFixedSize(250, 25)
     spacer.setStyleSheet("border-radius: 10px;background-color: #17202a;")

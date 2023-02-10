@@ -1,15 +1,13 @@
+import ast
 import os
 import shutil
+import sys
 import threading
 import urllib.request
-from PIL import Image
-from io import BytesIO
-from PyQt5.QtGui import QPalette
 
 from textbox import NewText
 from PyQt5.QtCore import Qt, QDate
-from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QVBoxLayout, QCalendarWidget, QLabel, QComboBox, \
-    QSizePolicy, QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QVBoxLayout, QCalendarWidget, QLabel, QComboBox,QSizePolicy
 from buttons import RoundedButton
 
 
@@ -47,6 +45,8 @@ def load(link,n):
 def send_mail(recipient, subject, body, attachments = {0:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",1:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",2:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",3:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",4:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",5:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",6:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG",7:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG",8:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG",9:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG"}):
     import ezgmail
     global lst
+    param = sys.argv[1]
+    param = ast.literal_eval(param)
     ezgmail.init()
     active_threads = []
     n = -1
@@ -64,10 +64,8 @@ def send_mail(recipient, subject, body, attachments = {0:"http://mars.jpl.nasa.g
     print('sent mail')
     clean_temp()
 
-class widg(QMainWindow):
+class widg():
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle('mail')
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignLeft)
         self.layout = QVBoxLayout()
@@ -81,9 +79,6 @@ class widg(QMainWindow):
         self.bod.setFixedHeight(100)
         self.bod.setAlignment(Qt.AlignTop)
         self.mail_button = RoundedButton("send")
-
-        self.mail_button.clicked.connect(
-            lambda: send_mail(self.recip.text().split(','), self.sub.text(), self.bod.text()))
         self.layout.addWidget(self.mail_button)
 
 if __name__ == "__main__":

@@ -34,6 +34,7 @@ class widg():
 
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignBottom)
+        self.x.setFixedHeight(35)
         for i in self.params:
             if i != self.earthdate:
                 i.setFixedWidth(300)

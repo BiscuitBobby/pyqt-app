@@ -16,6 +16,6 @@ def button_list(img):  # img is the image widget
     spacer.setStyleSheet("border-radius: 10px;background-color: #17202a;")
     print('buttons added')
 
-    lst = {"send": button2, "sendall": button3, "space": spacer}
+    lst = {"send": button2, "space": spacer}
     return lst
 

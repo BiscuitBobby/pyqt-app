@@ -16,6 +16,7 @@ class widg():
         self.earthdateText = RoundedButton('earth date')
         self.earthdateText.setFixedHeight(25)
         self.earthdate = QCalendarWidget()  # it's not a bug, it's a feature
+
         self.earthdate.clicked[QDate].connect(lambda: print(self.earthdate.selectedDate().toPyDate()))  # prints date
         # ------------------------------------------rover selection-----------------------------------------------------
         self.roverText = RoundedButton('rover')

@@ -38,6 +38,7 @@ def next():
         image_label.setPixmap(pic)
         image_label.update()
         text.setText("  "+diag.rover.currentText()+"  "+ diag.cam.currentText()+"  "+ str(diag.earthdate.selectedDate().toPyDate()))
+        but.setText(f'img {n+1}/{len(lst)}')
 
 
 def prev():
@@ -55,6 +56,7 @@ def prev():
         image_label.setPixmap(pic)
         image_label.update()
         text.setText("  "+diag.rover.currentText()+"  "+ diag.cam.currentText()+"  "+ str(diag.earthdate.selectedDate().toPyDate()))
+        but.setText(f'img {n+1}/{len(lst)}')
 
 
 def fetch_apply(key='DEMO_KEY', rover='curiosity', cam='', earth_date='2015-6-3'):
@@ -131,6 +133,7 @@ if __name__ == "__main__":
     # fetch bar
     text = QLabel()
     text.setStyleSheet("border-radius: 10px;background-color: #283747;color: white;")
+    but.setStyleSheet("border-radius: 10px;background-color: #283747;color: white;")
     text.setFixedSize(550, 25)
     fetchbar.addWidget(text)
 

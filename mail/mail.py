@@ -43,6 +43,7 @@ def load(link,n):
     print('added', link)
 
 def send_mail(recipient, subject, body, attachments = {0:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",1:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",2:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",3:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",4:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",5:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FLB_486615455EDR_F0481570FHAZ00323M_.JPG",6:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG",7:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG",8:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG",9:"http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01004/opgs/edr/fcam/FRB_486615455EDR_F0481570FHAZ00323M_.JPG"}):
+    global window
     import ezgmail
     global lst
     try:
@@ -66,6 +67,8 @@ def send_mail(recipient, subject, body, attachments = {0:"http://mars.jpl.nasa.g
         ezgmail.send(i, subject, body, attachments=lst)
     print('sent mail')
     clean_temp()
+    window.close()
+
 
 class widg():
     def __init__(self):
@@ -91,6 +94,6 @@ if __name__ == "__main__":
     widg = widg()
     widg.mail_button.clicked.connect(lambda: send_mail(widg.recip.text().split(','), widg.sub.text(), widg.bod.text()))
     window.setLayout(widg.layout)
-    window.setStyleSheet('background-color: #283747')
+    window.setStyleSheet('background-color: #283747;color: white;')
     window.show()
     app.exec_()

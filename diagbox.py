@@ -39,9 +39,9 @@ class widg():
             if i != self.earthdate:
                 i.setFixedWidth(300)
             if i != self.x:
-                i.setStyleSheet("border-radius: 5px;background-color: #1c2833;")
+                i.setStyleSheet("border-radius: 5px;background-color: #1c2833;color: white;")
             if i not in self.exclude:
-                i.setStyleSheet("border-radius: 5px;background-color: #283747;")
+                i.setStyleSheet("border-radius: 5px;background-color: #283747;color: white;")
                 i.setFixedHeight(30)
             if i == self.earthdate:
                 i.setStyleSheet("border-radius: 5px;background-color: #283747;")

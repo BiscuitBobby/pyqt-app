@@ -1,6 +1,5 @@
 import subprocess
 import sys
-
 from PyQt5.QtGui import QColor, QPalette
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QLabel
 from diagbox import widg
@@ -8,7 +7,6 @@ from mail.mail import send_mail
 from mail import mail
 from buttons import button_list, RoundedButton
 from PyQt5.QtCore import Qt
-from fetch import *
 import requests
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout
 from PyQt5.QtGui import QImage, QPixmap
@@ -26,9 +24,7 @@ def thred(func):
 
 
 def next():
-    global image_label
-    global n
-    global but
+    global image_label, text, n, but
     if (n+1) < len(lst):
         n += 1
         print(f'loading image {n}...')
@@ -41,12 +37,11 @@ def next():
         pic = QPixmap(image).scaled(800, 800, Qt.KeepAspectRatio)
         image_label.setPixmap(pic)
         image_label.update()
+        text.setText("  "+diag.rover.currentText()+"  "+ diag.cam.currentText()+"  "+ str(diag.earthdate.selectedDate().toPyDate()))
 
 
 def prev():
-    global image_label
-    global n
-    global but
+    global image_label, text, n, but
     if (n-1) >= 0:
         n -= 1
         print(f'loading image {n}...')
@@ -59,27 +54,33 @@ def prev():
         pic = QPixmap(image).scaled(800, 800, Qt.KeepAspectRatio)
         image_label.setPixmap(pic)
         image_label.update()
+        text.setText("  "+diag.rover.currentText()+"  "+ diag.cam.currentText()+"  "+ str(diag.earthdate.selectedDate().toPyDate()))
 
 
 def fetch_apply(key='DEMO_KEY', rover='curiosity', cam='', earth_date='2015-6-3'):
     global lst
+    global text
     global curv
     global n
     print(diag.earthdate.selectedDate().toPyDate(), diag.rover.currentText(), diag.cam.currentText())
     fallback_lst = lst
     lst = linku(api_key, diag.rover.currentText(), diag.cam.currentText(), diag.earthdate.selectedDate().toPyDate())
     if len(lst) < 1:
+        text.setText("loading image...")
         print("no data available")
         lst = fallback_lst
+        text.setText("  no data available")
     else:
         curv = lst[0]
         n -= 1
         next()
+        text.setText("  "+diag.rover.currentText()+"  "+ diag.cam.currentText()+"  "+ str(diag.earthdate.selectedDate().toPyDate()))
 
 
 if __name__ == "__main__":
     app = QApplication([])
     window = QWidget()
+    from fetch import *
 
     # ---------------------------------------------buttons--------------------------------------------------------------
     # prev button
@@ -96,7 +97,7 @@ if __name__ == "__main__":
 
     # fetch
     but = RoundedButton('')
-    but.clicked.connect(lambda: print(text.text()))
+    but.setStyleSheet("background-color: #283747; border-radius: 10px;")
     but.setFixedHeight(25)
 
     # the widgets
@@ -129,7 +130,7 @@ if __name__ == "__main__":
 
     # fetch bar
     text = QLabel()
-    text.setStyleSheet("border-radius: 10px;background-color: #283747;")
+    text.setStyleSheet("border-radius: 10px;background-color: #283747;color: white;")
     text.setFixedSize(550, 25)
     fetchbar.addWidget(text)
 
@@ -138,7 +139,7 @@ if __name__ == "__main__":
 
     # adding image to layout
     image.addWidget(image_label)
-    image.addLayout(fetchbar)  # fetchbar
+    image.addLayout(fetchbar)  # fetchbar, now useless
     image.addStretch()
 
     # --------------------------------putting together the master layout------------------------------------------------
